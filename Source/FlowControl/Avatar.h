@@ -27,6 +27,12 @@ private:
 public:	
 	UPROPERTY()
 		UInventoryComponent* MyInventory;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widgets")
+		USphereComponent *TriggerSphere;
+
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -39,9 +45,18 @@ public:
 		void DropItem();
 	UFUNCTION()
 		void TakeItem(AInventoryActor* InventoryItem);
+	/*
 	UFUNCTION()
 		virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other,
 			class UPrimitiveComponent* OtherComp, bool  bSelfMoved, FVector HitLocation,
 			FVector HitNormal, FVector  NormalImpulse, const FHitResult& Hit) override;
+	*/
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult &SweepResult);
 
 };

@@ -9,8 +9,9 @@
 
 AInventoryActor::AInventoryActor(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer) {
+
 	PrimaryActorTick.bCanEverTick = true;
-	//auto MeshAsset = ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("StaticMesh'/Engine/BasicShapes/Cube.Cube'"));  
+
 	auto MeshAsset = ObjectInitializer.CreateDefaultSubobject<UStaticMesh>(this, TEXT("Mash"));
 	if (MeshAsset != nullptr) { 
 		GetStaticMeshComponent()->SetStaticMesh(MeshAsset);    
@@ -19,8 +20,12 @@ AInventoryActor::AInventoryActor(const FObjectInitializer& ObjectInitializer)
 	
 	GetStaticMeshComponent()->SetMobility(EComponentMobility::Movable);
 	GetStaticMeshComponent()->SetSimulatePhysics(true);
+	GetStaticMeshComponent()->SetGenerateOverlapEvents(true);
+
 	SetActorEnableCollision(true);
 }
+
+
 
 void AInventoryActor::PickUp() { 
 	SetActorTickEnabled(false);  

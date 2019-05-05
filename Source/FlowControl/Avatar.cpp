@@ -2,6 +2,7 @@
 
 #include "Avatar.h"
 #include "Engine/World.h"
+#include <Engine/Engine.h>
 
 // Sets default values
 AAvatar::AAvatar()
@@ -10,20 +11,24 @@ AAvatar::AAvatar()
 	PrimaryActorTick.bCanEverTick = true;
 	MyInventory = CreateDefaultSubobject<UInventoryComponent>("MyInventory");
 
+	TriggerSphere = CreateDefaultSubobject<USphereComponent>(TEXT("SightSphere"));
+	TriggerSphere->SetSphereRadius(128);
+	TriggerSphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+
+	TriggerSphere->OnComponentBeginOverlap.AddDynamic(this, &AAvatar::OnOverlapBegin);
+
 }
 
 // Called when the game starts or when spawned
 void AAvatar::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void AAvatar::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AAvatar::Yaw(float amount)
@@ -57,13 +62,29 @@ void AAvatar::DropItem() {
 
 
 
-//pick up item
+//trigger when hit static stuff
+/*
 void AAvatar::NotifyHit(class UPrimitiveComponent*  MyComp, AActor* Other, class UPrimitiveComponent* OtherComp,
 	bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector  NormalImpulse, const FHitResult& Hit) {
 
 	AInventoryActor* InventoryItem = Cast<AInventoryActor>(Other);
 	if (InventoryItem != nullptr) {
 		TakeItem(InventoryItem); }
+}
+*/
+
+void AAvatar::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult &SweepResult) {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Showing Inventory...");
+	AInventoryActor* InventoryItem = Cast<AInventoryActor>(OtherActor);
+	if (InventoryItem != nullptr) {
+		TakeItem(InventoryItem);
+	}
+
 }
 
 void AAvatar::TakeItem(AInventoryActor*  InventoryItem) {

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/StaticMeshActor.h"
+#include "Components/SphereComponent.h"
 #include "InventoryActor.generated.h"
 
 /**
@@ -23,10 +24,6 @@ public:
 
 //	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widgets")
 //		TSubclassOf<class UStaticMesh> wStaticMesh;
-
-//	UPROPERTY(BlueprintReadOnly, Category = "Widgets")
-//	   UStaticMesh *MeshAsset;
-
 
 	virtual void PickUp(); 
 	virtual void PutDown(FTransform TargetLocation);

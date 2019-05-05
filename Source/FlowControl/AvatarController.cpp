@@ -65,7 +65,6 @@ void AAvatarController::MouseYaw(float amount) {
 	AAvatar *test = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	if (amount && test != NULL)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Showing Inventory...");
 		test->Yaw(amount);
 	}
 }
