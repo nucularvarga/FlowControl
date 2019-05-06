@@ -28,10 +28,10 @@ public:
 	UPROPERTY()
 		UInventoryComponent* MyInventory;
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widgets")
 		USphereComponent *TriggerSphere;
 
+	bool bCanPickUp;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -41,10 +41,12 @@ public:
 	void Yaw(float amount);
 	void Pitch(float amount);
 
+	AInventoryActor* PickUpItem;
+
 	UFUNCTION()
 		void DropItem();
 	UFUNCTION()
-		void TakeItem(AInventoryActor* InventoryItem);
+		void TakeItem();
 	/*
 	UFUNCTION()
 		virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other,
@@ -58,5 +60,12 @@ public:
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult &SweepResult);
+
+	UFUNCTION()
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor,
+			UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex);
+
 
 };

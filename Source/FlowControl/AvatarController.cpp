@@ -37,11 +37,15 @@ void AAvatarController::SetupInputComponent() {
 	FInputActionKeyMapping dropKey("DropItem", EKeys::E, 0, 0, 0, 0);
 	PlayerInput->AddEngineDefinedActionMapping(dropKey);
 
+	FInputActionKeyMapping pickUpKey("PickUp", EKeys::Q, 0, 0, 0, 0);
+	PlayerInput->AddEngineDefinedActionMapping(pickUpKey);
+
 	InputComponent->BindAxis("MoveForward", this, &AAvatarController::MoveForward);
 	InputComponent->BindAxis("MoveBack", this, &AAvatarController::MoveBack);
 	InputComponent->BindAxis("MousePitch", this, &AAvatarController::MousePitch);
 	InputComponent->BindAxis("MouseYaw", this, &AAvatarController::MouseYaw);
 	InputComponent->BindAction("DropItem", IE_Pressed, this, &AAvatarController::DropItem);
+	InputComponent->BindAction("PickUp", IE_Pressed, this, &AAvatarController::PickUp);
 }
 
 
@@ -86,6 +90,13 @@ void AAvatarController::DropItem() {
 	AAvatar *test = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	test->DropItem();
 }
+
+void AAvatarController::PickUp() {
+	AAvatar *test = Cast<AAvatar>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	test->TakeItem();
+}
+
+
 
 
 

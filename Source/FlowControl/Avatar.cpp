@@ -9,6 +9,8 @@ AAvatar::AAvatar()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	bCanPickUp = false;
+
 	MyInventory = CreateDefaultSubobject<UInventoryComponent>("MyInventory");
 
 	TriggerSphere = CreateDefaultSubobject<USphereComponent>(TEXT("SightSphere"));
@@ -16,6 +18,7 @@ AAvatar::AAvatar()
 	TriggerSphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
 
 	TriggerSphere->OnComponentBeginOverlap.AddDynamic(this, &AAvatar::OnOverlapBegin);
+	TriggerSphere->OnComponentEndOverlap.AddDynamic(this, &AAvatar::OnOverlapEnd);
 
 }
 
@@ -79,15 +82,25 @@ void AAvatar::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 	int32 OtherBodyIndex,
 	bool bFromSweep,
 	const FHitResult &SweepResult) {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Showing Inventory...");
+	
 	AInventoryActor* InventoryItem = Cast<AInventoryActor>(OtherActor);
 	if (InventoryItem != nullptr) {
-		TakeItem(InventoryItem);
+		PickUpItem = InventoryItem;
+		bCanPickUp = true;
 	}
 
 }
 
-void AAvatar::TakeItem(AInventoryActor*  InventoryItem) {
-	InventoryItem->PickUp(); 
-	MyInventory->AddToInventory(InventoryItem);
+void AAvatar::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Showing Inventory...");
+	bCanPickUp = false;
+}
+
+void AAvatar::TakeItem() {
+	if (bCanPickUp == true) {
+		bCanPickUp = false;
+		PickUpItem->PickUp();
+		MyInventory->AddToInventory(PickUpItem);
+	}
 }

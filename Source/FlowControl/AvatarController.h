@@ -33,6 +33,7 @@ public:
 	void MousePitch(float amount);
 
 	void DropItem();
+	void PickUp();
 	virtual void SetPawn(APawn* InPawn) override;
 	
 };
