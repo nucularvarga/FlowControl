@@ -9,10 +9,16 @@
 /**
  * 
  */
+
 UCLASS()
 class FLOWCONTROL_API AFlowControlGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+public:
+	AFlowControlGameModeBase();
 
+	virtual void BeginPlay() override;
+
+	
 	
 };

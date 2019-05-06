@@ -2,3 +2,11 @@
 
 #include "FlowControlGameModeBase.h"
 
+AFlowControlGameModeBase::AFlowControlGameModeBase()
+{
+}
+
+void AFlowControlGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+}

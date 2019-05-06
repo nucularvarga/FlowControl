@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/StaticMeshActor.h"
 #include "Components/SphereComponent.h"
+#include <Components/PointLightComponent.h>
 #include "InventoryActor.generated.h"
 
 /**
@@ -17,6 +18,11 @@ class FLOWCONTROL_API AInventoryActor : public AStaticMeshActor
 
 public:
 
+	UPROPERTY() 
+	UPointLightComponent* PointLight;
+
+	virtual void BeginPlay() override;
+
 	AInventoryActor(const FObjectInitializer& ObjectInitializer);
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -25,6 +31,11 @@ public:
 //	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widgets")
 //		TSubclassOf<class UStaticMesh> wStaticMesh;
 
+	UFUNCTION()
+	void Test();
+
+	UFUNCTION()
+	void EnableLight();
 	virtual void PickUp(); 
 	virtual void PutDown(FTransform TargetLocation);
 	

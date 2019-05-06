@@ -6,6 +6,7 @@
 #include "InventoryActor.h"
 #include "InventoryComponent.h"
 #include "GameFramework/Character.h"
+#include <Components/PointLightComponent.h>
 #include "Avatar.generated.h"
 
 UCLASS()
@@ -47,25 +48,18 @@ public:
 		void DropItem();
 	UFUNCTION()
 		void TakeItem();
+
+
+
 	/*
 	UFUNCTION()
 		virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other,
 			class UPrimitiveComponent* OtherComp, bool  bSelfMoved, FVector HitLocation,
 			FVector HitNormal, FVector  NormalImpulse, const FHitResult& Hit) override;
 	*/
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex,
-		bool bFromSweep,
-		const FHitResult &SweepResult);
 
-	UFUNCTION()
-	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex);
+	UFUNCTION() virtual void NotifyActorBeginOverlap(AActor* OtherActor)  override; 
+	UFUNCTION() virtual void NotifyActorEndOverlap(AActor* OtherActor)  override;
 
 
 };

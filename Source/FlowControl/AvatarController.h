@@ -10,6 +10,7 @@
 /**
  * 
  */
+DECLARE_DELEGATE(FStandardDelegateSignature)
 UCLASS()
 class FLOWCONTROL_API AAvatarController : public APlayerController
 {
@@ -25,7 +26,7 @@ public:
 	AAvatarController();
 	//UPROPERTY(VisibleAnywhere, Category = CustomProperties) 
 	//	AAvatar* MainCorePawn;
-
+	FStandardDelegateSignature MyStandardDelegate;
 
 	void MoveForward(float amount);
 	void MoveBack(float amount);

@@ -9,3 +9,8 @@ AMyGameMode::AMyGameMode() : AGameMode(){
 	PlayerControllerClass = AAvatarController::StaticClass();
 	//DefaultPawnClass = AAvatar::StaticClass();
 }
+
+void AMyGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+}

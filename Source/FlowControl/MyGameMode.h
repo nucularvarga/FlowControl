@@ -9,10 +9,15 @@
 /**
  * 
  */
+
+
 UCLASS()
 class FLOWCONTROL_API AMyGameMode : public AGameMode
 {
 	GENERATED_BODY()
-
+public:
+	
 	AMyGameMode();
+
+	virtual void BeginPlay() override;
 };

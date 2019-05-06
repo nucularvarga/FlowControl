@@ -2,7 +2,11 @@
 
 #include "Avatar.h"
 #include "Engine/World.h"
+
 #include <Engine/Engine.h>
+#include <Kismet/GameplayStatics.h>
+#include "MyGameMode.h"
+#include "AvatarController.h"
 
 // Sets default values
 AAvatar::AAvatar()
@@ -11,14 +15,13 @@ AAvatar::AAvatar()
 	PrimaryActorTick.bCanEverTick = true;
 	bCanPickUp = false;
 
+
+
 	MyInventory = CreateDefaultSubobject<UInventoryComponent>("MyInventory");
 
 	TriggerSphere = CreateDefaultSubobject<USphereComponent>(TEXT("SightSphere"));
 	TriggerSphere->SetSphereRadius(128);
 	TriggerSphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-
-	TriggerSphere->OnComponentBeginOverlap.AddDynamic(this, &AAvatar::OnOverlapBegin);
-	TriggerSphere->OnComponentEndOverlap.AddDynamic(this, &AAvatar::OnOverlapEnd);
 
 }
 
@@ -27,6 +30,8 @@ void AAvatar::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+
 
 // Called every frame
 void AAvatar::Tick(float DeltaTime)
@@ -76,24 +81,22 @@ void AAvatar::NotifyHit(class UPrimitiveComponent*  MyComp, AActor* Other, class
 }
 */
 
-void AAvatar::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp,
-	int32 OtherBodyIndex,
-	bool bFromSweep,
-	const FHitResult &SweepResult) {
-	
+void AAvatar::NotifyActorBeginOverlap(AActor*  OtherActor) {
 	AInventoryActor* InventoryItem = Cast<AInventoryActor>(OtherActor);
 	if (InventoryItem != nullptr) {
 		PickUpItem = InventoryItem;
 		bCanPickUp = true;
 	}
 
+	UWorld* TheWorld = GetWorld();
+	if (TheWorld != nullptr){
+		AAvatarController* GameMode = Cast<AAvatarController>(UGameplayStatics::GetPlayerController(this, 0));
+		//AMyGameMode * MyGameMode = Cast<AMyGameMode>(GameMode);
+		GameMode->MyStandardDelegate.ExecuteIfBound();
+	}
 }
-
-void AAvatar::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Showing Inventory...");
+void AAvatar::NotifyActorEndOverlap(AActor*  OtherActor) { 
+	GEngine->AddOnScreenDebugMessage(-1, 1, FColor::Red, FString::Printf(TEXT("%s left me"), *(OtherActor->GetName()))); 
 	bCanPickUp = false;
 }
 
